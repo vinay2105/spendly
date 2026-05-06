@@ -93,7 +93,7 @@
 .hero-visual {
     width: 100%;
     max-width: 860px;
-    justify-content: unset;
+    justify-content: center;
 }
 
 .browser-mock {
@@ -215,6 +215,145 @@
 .mock-cat-bar--food   { background: #c17f24; }
 .mock-cat-bar--travel { background: #4a7fc1; }
 .mock-cat-bar--bills  { background: #7c6bb5; }
+
+/* ============================================================
+   Video modal
+   ============================================================ */
+
+.video-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-modal.is-open {
+    display: flex;
+    animation: modal-fade 0.2s ease;
+}
+
+@keyframes modal-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.video-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+}
+
+.video-modal-dialog {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 860px;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.video-modal-close {
+    position: absolute;
+    top: -2.75rem;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+}
+
+.video-modal-close:hover { opacity: 1; }
+
+.video-modal-embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.video-modal-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ============================================================
+   Animations & interactions
+   ============================================================ */
+
+@keyframes rise-in {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dot-pulse {
+    0%, 100% { opacity: 1;   transform: scale(1); }
+    50%       { opacity: 0.45; transform: scale(0.75); }
+}
+
+@keyframes bar-grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+/* Staggered entrance for hero elements */
+.hero-badge    { animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both 0.1s; }
+.hero-title    { animation: rise-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both 0.25s; }
+.hero-subtitle { animation: rise-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both 0.4s; }
+.hero-actions  { animation: rise-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both 0.55s; }
+.hero-visual   { animation: rise-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both 0.65s; }
+
+/* Subtle pulse on the live dot */
+.hero-badge-dot { animation: dot-pulse 2.8s ease-in-out infinite 1.6s; }
+
+/* Button hover — lift + shadow */
+.btn-hero {
+    transition: background 0.2s, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s;
+}
+.btn-hero:hover  { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(15, 15, 15, 0.22); }
+.btn-hero:active { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15, 15, 15, 0.14); }
+
+/* Browser mock — smooth return after JS tilt */
+.browser-mock {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    will-change: transform;
+}
+
+/* Stat card hover lift */
+.mock-stat-card {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.mock-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09);
+}
+
+/* Category bars grow in from the left */
+.mock-cat-bar {
+    transform-origin: left center;
+    animation: bar-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.mock-cat-bar--food   { animation-delay: 0.9s; }
+.mock-cat-bar--travel { animation-delay: 1.05s; }
+.mock-cat-bar--bills  { animation-delay: 1.2s; }
+
+/* Feature card 3D pop on hover */
+.feature-card {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.10);
+}
 
 @media (max-width: 700px) {
     .mock-stats { grid-template-columns: 1fr; }

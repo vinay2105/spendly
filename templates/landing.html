@@ -24,7 +24,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-hero">Create free account</a>
-            <a href="#" class="btn-hero">See how it works</a>
+            <a href="#" class="btn-hero" id="seeHowBtn">See how it works</a>
         </div>
     </div>
 
@@ -106,4 +106,77 @@
     </div>
 </section>
 
+<!-- Video modal -->
+<div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="How it works video">
+    <div class="video-modal-overlay" id="videoOverlay"></div>
+    <div class="video-modal-dialog">
+        <button class="video-modal-close" id="videoClose" aria-label="Close video">&times;</button>
+        <div class="video-modal-embed">
+            <iframe id="videoFrame"
+                    src=""
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    var VIDEO_SRC = 'https://www.youtube.com/embed/K_KIQA849cs';
+
+    var modal    = document.getElementById('videoModal');
+    var frame    = document.getElementById('videoFrame');
+    var overlay  = document.getElementById('videoOverlay');
+    var closeBtn = document.getElementById('videoClose');
+
+    function openModal() {
+        frame.src = VIDEO_SRC + '?autoplay=1';
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        frame.src = '';
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('seeHowBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+}());
+
+// Mouse-tracking 3D tilt on the browser mockup
+(function () {
+    var el = document.querySelector('.browser-mock');
+    if (!el) return;
+
+    el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var x = (e.clientX - r.left)  / r.width  - 0.5;
+        var y = (e.clientY - r.top)   / r.height - 0.5;
+        el.style.transform = 'perspective(900px) rotateX(' + (-y * 5) + 'deg) rotateY(' + (x * 5) + 'deg) translateY(-6px)';
+        el.style.boxShadow = '0 30px 70px rgba(0,0,0,0.14)';
+    });
+
+    el.addEventListener('mouseleave', function () {
+        el.style.transform = '';
+        el.style.boxShadow = '';
+    });
+}());
+</script>
 {% endblock %}
