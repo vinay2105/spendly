@@ -9,6 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block head %}{% endblock %}
+    <style>
+      .flash-banner { max-width: var(--auth-width); margin: 1.25rem auto 0; padding: 0 1rem; }
+      .flash { padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.875rem; margin-bottom: 0.5rem; }
+      .flash--error   { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger-light); }
+      .flash--success { background: var(--accent-light);  color: var(--accent);  border: 1px solid var(--accent-light); }
+    </style>
 </head>
 <body>
 
@@ -24,6 +30,16 @@
             </div>
         </div>
     </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-banner">
+          {% for category, message in messages %}
+            <p class="flash flash--{{ category }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
     <main class="main-content">
         {% block content %}{% endblock %}
