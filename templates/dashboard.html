@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="auth-section">
+    <div class="auth-container" style="max-width: 680px;">
+
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome back, {{ session.get('user_name') }}!</h1>
+            <p class="auth-subtitle">Here's your Spendly dashboard.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+
+            <a href="{{ url_for('add_expense') }}" class="feature-card" style="text-decoration: none; display: block;">
+                <div class="feature-icon">＋</div>
+                <h3 class="feature-title">Add Expense</h3>
+                <p class="feature-desc">Log a new expense to keep your records up to date.</p>
+            </a>
+
+            <a href="{{ url_for('profile') }}" class="feature-card" style="text-decoration: none; display: block;">
+                <div class="feature-icon">◎</div>
+                <h3 class="feature-title">Your Profile</h3>
+                <p class="feature-desc">View and manage your account details.</p>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
