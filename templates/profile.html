@@ -9,33 +9,56 @@
     <h1 class="profile-name">{{ user.name }}</h1>
     <p class="profile-email">{{ user.email }}</p>
     <p class="profile-since">Member since {{ member_since }}</p>
-    <div class="profile-hero-actions">
-        <a href="{{ url_for('profile_edit') }}" class="btn-ghost">Edit Profile</a>
-    </div>
 </div>
 
-<div class="profile-body">
-    <div class="profile-section-header">
-        <span class="profile-section-label">Account Information</span>
-        <a href="{{ url_for('profile_edit') }}" class="profile-section-edit">Edit →</a>
-    </div>
-    <div class="profile-info-card">
-        <div class="profile-info-row">
-            <span class="profile-info-label">Full Name</span>
-            <span class="profile-info-value">{{ user.name }}</span>
+<div class="profile-edit-section">
+    <div class="profile-cards-grid">
+
+        <div class="profile-form-card">
+            <div class="profile-form-card-header">
+                <i data-lucide="user"></i>
+                <span class="profile-form-card-title">Account Details</span>
+            </div>
+            <form method="POST" action="{{ url_for('profile') }}">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input"
+                           value="{{ user.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input"
+                           value="{{ user.email }}" required>
+                </div>
+                <button type="submit" class="btn-submit">Save changes</button>
+            </form>
         </div>
-        <div class="profile-info-row">
-            <span class="profile-info-label">Email Address</span>
-            <span class="profile-info-value">{{ user.email }}</span>
+
+        <div class="profile-form-card">
+            <div class="profile-form-card-header">
+                <i data-lucide="lock"></i>
+                <span class="profile-form-card-title">Change Password</span>
+            </div>
+            <form method="POST" action="{{ url_for('profile_password') }}">
+                <div class="form-group">
+                    <label for="current_password">Current Password</label>
+                    <input type="password" id="current_password" name="current_password"
+                           class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password"
+                           class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm New Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                           class="form-input" required>
+                </div>
+                <button type="submit" class="btn-submit">Update password</button>
+            </form>
         </div>
-        <div class="profile-info-row">
-            <span class="profile-info-label">Member Since</span>
-            <span class="profile-info-value">{{ member_since }}</span>
-        </div>
-        <div class="profile-info-row">
-            <span class="profile-info-label">Password</span>
-            <span class="profile-info-value" style="color: var(--ink-faint); letter-spacing: 0.15em;">••••••••</span>
-        </div>
+
     </div>
 </div>
 

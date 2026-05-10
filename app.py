@@ -124,26 +124,8 @@ def dashboard():
     return render_template("dashboard.html")
 
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
 def profile():
-    if not session.get("user_id"):
-        return redirect(url_for("login"))
-
-    conn = get_db()
-    try:
-        user = conn.execute(
-            "SELECT id, name, email, created_at FROM users WHERE id = ?",
-            (session["user_id"],),
-        ).fetchone()
-    finally:
-        conn.close()
-
-    member_since = datetime.strptime(user["created_at"][:10], "%Y-%m-%d").strftime("%B %d, %Y")
-    return render_template("profile.html", user=user, member_since=member_since)
-
-
-@app.route("/profile/edit", methods=["GET", "POST"])
-def profile_edit():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
@@ -182,18 +164,24 @@ def profile_edit():
 
         for msg in errors:
             flash(msg, "error")
-        return redirect(url_for("profile_edit"))
+        return redirect(url_for("profile"))
 
     conn = get_db()
     try:
         user = conn.execute(
-            "SELECT id, name, email FROM users WHERE id = ?",
+            "SELECT id, name, email, created_at FROM users WHERE id = ?",
             (session["user_id"],),
         ).fetchone()
     finally:
         conn.close()
 
-    return render_template("profile_edit.html", user=user)
+    member_since = datetime.strptime(user["created_at"][:10], "%Y-%m-%d").strftime("%B %d, %Y")
+    return render_template("profile.html", user=user, member_since=member_since)
+
+
+@app.route("/profile/edit")
+def profile_edit():
+    return redirect(url_for("profile"))
 
 
 @app.route("/profile/password", methods=["POST"])
@@ -220,7 +208,7 @@ def profile_password():
     if errors:
         for msg in errors:
             flash(msg, "error")
-        return redirect(url_for("profile_edit"))
+        return redirect(url_for("profile"))
 
     conn = get_db()
     try:
@@ -230,7 +218,7 @@ def profile_password():
         ).fetchone()
         if not check_password_hash(row["password_hash"], current):
             flash("Current password is incorrect.", "error")
-            return redirect(url_for("profile_edit"))
+            return redirect(url_for("profile"))
         conn.execute(
             "UPDATE users SET password_hash = ? WHERE id = ?",
             (generate_password_hash(new), session["user_id"]),
