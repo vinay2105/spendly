@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import get_db, init_db, seed_db
@@ -125,7 +126,121 @@ def dashboard():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    conn = get_db()
+    try:
+        user = conn.execute(
+            "SELECT id, name, email, created_at FROM users WHERE id = ?",
+            (session["user_id"],),
+        ).fetchone()
+    finally:
+        conn.close()
+
+    member_since = datetime.strptime(user["created_at"][:10], "%Y-%m-%d").strftime("%B %d, %Y")
+    return render_template("profile.html", user=user, member_since=member_since)
+
+
+@app.route("/profile/edit", methods=["GET", "POST"])
+def profile_edit():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        name  = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+
+        errors = []
+        if not name:
+            errors.append("Name is required.")
+        if not email:
+            errors.append("Email is required.")
+        elif "@" not in email:
+            errors.append("Please enter a valid email address.")
+
+        if not errors:
+            conn = get_db()
+            try:
+                taken = conn.execute(
+                    "SELECT id FROM users WHERE email = ? AND id != ?",
+                    (email, session["user_id"]),
+                ).fetchone()
+                if taken:
+                    errors.append("That email is already in use by another account.")
+                else:
+                    conn.execute(
+                        "UPDATE users SET name = ?, email = ? WHERE id = ?",
+                        (name, email, session["user_id"]),
+                    )
+                    conn.commit()
+                    session["user_name"] = name
+                    flash("Profile updated successfully.", "success")
+                    return redirect(url_for("profile"))
+            finally:
+                conn.close()
+
+        for msg in errors:
+            flash(msg, "error")
+        return redirect(url_for("profile_edit"))
+
+    conn = get_db()
+    try:
+        user = conn.execute(
+            "SELECT id, name, email FROM users WHERE id = ?",
+            (session["user_id"],),
+        ).fetchone()
+    finally:
+        conn.close()
+
+    return render_template("profile_edit.html", user=user)
+
+
+@app.route("/profile/password", methods=["POST"])
+def profile_password():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    current = request.form.get("current_password", "").strip()
+    new     = request.form.get("new_password", "").strip()
+    confirm = request.form.get("confirm_password", "").strip()
+
+    errors = []
+    if not current:
+        errors.append("Current password is required.")
+    if not new:
+        errors.append("New password is required.")
+    elif len(new) < 8:
+        errors.append("New password must be at least 8 characters.")
+    if not confirm:
+        errors.append("Please confirm your new password.")
+    elif new and new != confirm:
+        errors.append("Passwords do not match.")
+
+    if errors:
+        for msg in errors:
+            flash(msg, "error")
+        return redirect(url_for("profile_edit"))
+
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT password_hash FROM users WHERE id = ?",
+            (session["user_id"],),
+        ).fetchone()
+        if not check_password_hash(row["password_hash"], current):
+            flash("Current password is incorrect.", "error")
+            return redirect(url_for("profile_edit"))
+        conn.execute(
+            "UPDATE users SET password_hash = ? WHERE id = ?",
+            (generate_password_hash(new), session["user_id"]),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    flash("Password updated successfully.", "success")
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/add")

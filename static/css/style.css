@@ -575,6 +575,136 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ------------------------------------------------------------------ */
+/* Profile page                                                        */
+/* ------------------------------------------------------------------ */
+
+.profile-hero {
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--border);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 24px rgba(26, 71, 42, 0.2);
+    animation: avatarPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+    animation: fadeInUp 0.35s ease 0.08s both;
+}
+
+.profile-email {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.3rem;
+    animation: fadeInUp 0.35s ease 0.14s both;
+}
+
+.profile-since {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-bottom: 1.75rem;
+    animation: fadeInUp 0.35s ease 0.2s both;
+}
+
+.profile-hero-actions {
+    animation: fadeInUp 0.35s ease 0.26s both;
+}
+
+.profile-body {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+}
+
+.profile-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.profile-section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.profile-section-edit {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.profile-section-edit:hover { opacity: 0.7; }
+
+.profile-info-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    animation: fadeInUp 0.4s ease 0.3s both;
+}
+
+.profile-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 0.15s;
+}
+
+.profile-info-row:last-child { border-bottom: none; }
+.profile-info-row:hover { background: var(--paper); }
+
+.profile-info-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.profile-info-value {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes avatarPop {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
 
