@@ -28,6 +28,15 @@
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 20px;
+
+    /* Category badge tokens */
+    --cat-food-bg: #fef3c7;        --cat-food-text: #92400e;
+    --cat-transport-bg: #dbeafe;   --cat-transport-text: #1e40af;
+    --cat-bills-bg: var(--danger-light);  --cat-bills-text: var(--danger);
+    --cat-health-bg: var(--accent-light); --cat-health-text: var(--accent);
+    --cat-entertainment-bg: #ede9fe; --cat-entertainment-text: #5b21b6;
+    --cat-shopping-bg: var(--accent-2-light); --cat-shopping-text: var(--accent-2);
+    --cat-other-bg: var(--paper-warm); --cat-other-text: var(--ink-muted);
 }
 
 /* ------------------------------------------------------------------ */
@@ -705,4 +714,172 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 600px) {
     .nav-links a:not(.nav-cta) { display: none; }
     .hero { padding: 3rem 1rem 2rem; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard                                                           */
+/* ------------------------------------------------------------------ */
+
+.dashboard-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--ink);
+}
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+}
+
+.summary-card-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+}
+
+.summary-card-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* Expense table                                                       */
+/* ------------------------------------------------------------------ */
+
+.expense-table-wrap {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.expense-table th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    background: var(--paper);
+}
+
+.expense-table td {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.expense-table tbody tr:last-child td { border-bottom: none; }
+.expense-table tbody tr:hover { background: var(--paper); }
+
+.expense-table th.col-amount,
+.expense-table td.col-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.cat-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+}
+
+.cat-food          { background: var(--cat-food-bg);          color: var(--cat-food-text); }
+.cat-transport     { background: var(--cat-transport-bg);     color: var(--cat-transport-text); }
+.cat-bills         { background: var(--cat-bills-bg);         color: var(--cat-bills-text); }
+.cat-health        { background: var(--cat-health-bg);        color: var(--cat-health-text); }
+.cat-entertainment { background: var(--cat-entertainment-bg); color: var(--cat-entertainment-text); }
+.cat-shopping      { background: var(--cat-shopping-bg);      color: var(--cat-shopping-text); }
+.cat-other         { background: var(--cat-other-bg);         color: var(--cat-other-text); }
+
+.table-action {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    padding: 0;
+}
+
+.table-action:hover       { color: var(--ink); }
+.table-action.danger      { color: var(--danger); }
+.table-action.danger:hover { opacity: 0.7; }
+
+.expense-table-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Expense add / edit form                                             */
+/* ------------------------------------------------------------------ */
+
+.expense-form-section {
+    min-height: calc(100vh - 60px - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+}
+
+.expense-form-container {
+    width: 100%;
+    max-width: 520px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard responsive                                                */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+    .summary-cards { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+    .summary-cards { grid-template-columns: 1fr; }
+    .expense-table-wrap { overflow-x: auto; }
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
 }
