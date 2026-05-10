@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile — Spendly{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-container" style="max-width: 520px;">
+
+        <div class="auth-header">
+            <h1 class="auth-title">Edit Profile</h1>
+            <p class="auth-subtitle">Update your account details or change your password.</p>
+        </div>
+
+        <div class="auth-card" style="margin-bottom: 1.5rem;">
+            <h2 class="feature-title" style="margin-bottom: 1.25rem;">Account Details</h2>
+            <form method="POST" action="{{ url_for('profile_edit') }}">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input"
+                           value="{{ user.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input"
+                           value="{{ user.email }}" required>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button type="submit" class="btn-submit" style="flex: 1;">Save changes</button>
+                    <a href="{{ url_for('profile') }}" class="btn-ghost"
+                       style="display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 1.25rem;">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="auth-card">
+            <h2 class="feature-title" style="margin-bottom: 1.25rem;">Change Password</h2>
+            <form method="POST" action="{{ url_for('profile_password') }}">
+                <div class="form-group">
+                    <label for="current_password">Current Password</label>
+                    <input type="password" id="current_password" name="current_password"
+                           class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password"
+                           class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm New Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                           class="form-input" required>
+                </div>
+                <button type="submit" class="btn-submit">Update password</button>
+            </form>
+        </div>
+
+        <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="{{ url_for('profile') }}" style="font-size: 0.875rem; color: var(--ink-muted);">
+                ← Back to Profile
+            </a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}
