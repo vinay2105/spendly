@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Expense — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="expense-form-section">
+    <div class="expense-form-container">
+
+        <div class="auth-header">
+            <h1 class="auth-title">Edit Expense</h1>
+            <p class="auth-subtitle">Update the details for this expense.</p>
+        </div>
+
+        <div class="auth-card">
+            <form method="POST" action="{{ url_for('edit_expense', id=expense.id) }}">
+
+                <div class="form-group">
+                    <label for="amount">Amount (₹)</label>
+                    <input type="number" id="amount" name="amount" class="form-input"
+                           step="0.01" min="0.01" value="{{ expense.amount }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" class="form-input" required>
+                        {% for c in categories %}
+                        <option value="{{ c }}" {% if c == expense.category %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" class="form-input"
+                           value="{{ expense.date }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description <span style="color: var(--ink-faint); font-weight: 400;">(optional)</span></label>
+                    <input type="text" id="description" name="description" class="form-input"
+                           value="{{ expense.description or '' }}" placeholder="What was this for?">
+                </div>
+
+                <button type="submit" class="btn-submit">Save changes</button>
+            </form>
+        </div>
+
+        <p style="text-align: center; margin-top: 1rem;">
+            <a href="{{ url_for('dashboard') }}" style="font-size: 0.875rem; color: var(--ink-muted);">
+                ← Back to Dashboard
+            </a>
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}
